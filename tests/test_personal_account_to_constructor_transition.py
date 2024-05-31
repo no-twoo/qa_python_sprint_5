@@ -1,76 +1,69 @@
-from selenium import webdriver
+from conftest import *
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
-from locators.locators_personal_account_to_constructor_transition import (
-    TestLocatorsPersonalAccountToConstructorTransition)
+from locators.locators import TestLocators
+from data import *
 
 
 class TestPersonalAccountToConstructorTransition:
-    def test_click_conctructor(self):
-        driver = webdriver.Chrome()
+    def test_click_constructor(self, driver):
         driver.get('https://stellarburgers.nomoreparties.site/')
 
-        driver.find_element(*TestLocatorsPersonalAccountToConstructorTransition.SEARCH_BUTTON_LOGIN_ACCOUNT).click()
-
-        WebDriverWait(driver, 5).until(
-            expected_conditions.visibility_of_element_located
-            (TestLocatorsPersonalAccountToConstructorTransition.SEARCH_BUTTON_LOGIN))
-
-        driver.find_element(*TestLocatorsPersonalAccountToConstructorTransition.SEARCH_INPUT_EMAIL).send_keys(
-            'irina_anokhina9826@yandex.ru')
-        driver.find_element(*TestLocatorsPersonalAccountToConstructorTransition.SEARCH_INPUT_PASSWORD).send_keys(
-            '11223344')
-
-        driver.find_element(*TestLocatorsPersonalAccountToConstructorTransition.CLICK_BUTTON_LOGIN).click()
+        driver.find_element(*TestLocators.SEARCH_BUTTON_LOGIN_ACCOUNT).click()
 
         WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
-                                       (TestLocatorsPersonalAccountToConstructorTransition.
-                                        SEARCH_BUTTON_PERSONAL_ACCOUNT))
+                                       (TestLocators.SEARCH_BUTTON_LOGIN))
 
-        driver.find_element(*TestLocatorsPersonalAccountToConstructorTransition.SEARCH_BUTTON_PERSONAL_ACCOUNT).click()
+        driver.find_element(*TestLocators.SEARCH_INPUT_EMAIL).send_keys(login_email)
+        driver.find_element(*TestLocators.SEARCH_INPUT_PASSWORD).send_keys(login_password)
+
+        driver.find_element(*TestLocators.CLICK_BUTTON_LOGIN).click()
 
         WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
-                                       (TestLocatorsPersonalAccountToConstructorTransition.SEARCH_TEXT_PROFILE))
+                                       (TestLocators.SEARCH_BUTTON_PERSONAL_ACCOUNT))
 
-        driver.find_element(*TestLocatorsPersonalAccountToConstructorTransition.SEARCH_BUTTON_CONSTRUCTOR).click()
+        driver.find_element(*TestLocators.SEARCH_BUTTON_PERSONAL_ACCOUNT).click()
+
+        WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
+                                       (TestLocators.SEARCH_TEXT_PROFILE))
+
+        driver.find_element(*TestLocators.SEARCH_BUTTON_CONSTRUCTOR).click()
 
         WebDriverWait(driver, 5).until(
-            expected_conditions.visibility_of_element_located
-            (TestLocatorsPersonalAccountToConstructorTransition.SEARCH_BUTTON_ORDER))
+            expected_conditions.visibility_of_element_located(TestLocators.SEARCH_BUTTON_ORDER))
 
-        driver.quit()
+        check_button = driver.find_element(*TestLocators.SEARCH_BUTTON_ORDER).text
 
-    def test_click_logo(self):
-        driver = webdriver.Chrome()
+        assert check_button == "Оформить заказ"
+
+
+    def test_click_logo(self, driver):
         driver.get('https://stellarburgers.nomoreparties.site/')
 
-        driver.find_element(*TestLocatorsPersonalAccountToConstructorTransition.SEARCH_BUTTON_LOGIN_ACCOUNT).click()
-
-        WebDriverWait(driver, 5).until(
-            expected_conditions.visibility_of_element_located
-            (TestLocatorsPersonalAccountToConstructorTransition.SEARCH_BUTTON_LOGIN))
-
-        driver.find_element(*TestLocatorsPersonalAccountToConstructorTransition.SEARCH_INPUT_EMAIL).send_keys(
-            'irina_anokhina9826@yandex.ru')
-
-        driver.find_element(*TestLocatorsPersonalAccountToConstructorTransition.SEARCH_INPUT_PASSWORD).send_keys(
-            '11223344')
-
-        driver.find_element(*TestLocatorsPersonalAccountToConstructorTransition.CLICK_BUTTON_LOGIN).click()
+        driver.find_element(*TestLocators.SEARCH_BUTTON_LOGIN_ACCOUNT).click()
 
         WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
-                                       (TestLocatorsPersonalAccountToConstructorTransition.
-                                        SEARCH_BUTTON_PERSONAL_ACCOUNT))
+                                       (TestLocators.SEARCH_BUTTON_LOGIN))
 
-        driver.find_element(*TestLocatorsPersonalAccountToConstructorTransition.SEARCH_BUTTON_PERSONAL_ACCOUNT).click()
+        driver.find_element(*TestLocators.SEARCH_INPUT_EMAIL).send_keys(login_email)
+
+        driver.find_element(*TestLocators.SEARCH_INPUT_PASSWORD).send_keys(login_password)
+
+        driver.find_element(*TestLocators.CLICK_BUTTON_LOGIN).click()
 
         WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
-                                       (TestLocatorsPersonalAccountToConstructorTransition.SEARCH_TEXT_PROFILE))
+                                       (TestLocators.SEARCH_BUTTON_PERSONAL_ACCOUNT))
 
-        driver.find_element(*TestLocatorsPersonalAccountToConstructorTransition.SEARCH_BUTTON_LOGO).click()
+        driver.find_element(*TestLocators.SEARCH_BUTTON_PERSONAL_ACCOUNT).click()
 
-        WebDriverWait(driver, 5).until(
-            expected_conditions.visibility_of_element_located
-            (TestLocatorsPersonalAccountToConstructorTransition.SEARCH_BUTTON_ORDER))
+        WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
+                                       (TestLocators.SEARCH_TEXT_PROFILE))
 
-        driver.quit()
+        driver.find_element(*TestLocators.SEARCH_BUTTON_LOGO).click()
+
+        WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
+                                       (TestLocators.SEARCH_BUTTON_ORDER))
+
+        check_button = driver.find_element(*TestLocators.SEARCH_BUTTON_ORDER).text
+
+        assert check_button == "Оформить заказ"

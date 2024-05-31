@@ -1,27 +1,44 @@
-from selenium import webdriver
+from conftest import *
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
-from locators.locators_section_constructor import TestLocatorsSectionConstructor
+from locators.locators import TestLocators
 
 
 class TestSectionConstructor:
-    def test_check_operation_of_transitions(self):
-        driver = webdriver.Chrome()
+    def test_check_operation_fillings(self, driver):
         driver.get("https://stellarburgers.nomoreparties.site/")
 
-        driver.find_element(*TestLocatorsSectionConstructor.SEARCH_BUTTON_FILLINGS).click()
+        driver.find_element(*TestLocators.SEARCH_BUTTON_FILLINGS).click()
 
         WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
-                                       (TestLocatorsSectionConstructor.CHECK_SECTION_FILLINGS))
+                                       (TestLocators.CHECK_SECTION_FILLINGS))
 
-        driver.find_element(*TestLocatorsSectionConstructor.SEARCH_BUTTON_SAUCES).click()
+        check_text = driver.find_element(*TestLocators.CHECK_SECTION_FILLINGS).text
+
+        assert check_text == "Начинки"
+
+    def test_check_operation_sauces(self, driver):
+        driver.get("https://stellarburgers.nomoreparties.site/")
+
+        driver.find_element(*TestLocators.SEARCH_BUTTON_SAUCES).click()
 
         WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
-                                       (TestLocatorsSectionConstructor.CHECK_SECTION_SAUCES))
+                                       (TestLocators.CHECK_SECTION_SAUCES))
 
-        driver.find_element(*TestLocatorsSectionConstructor.SEARCH_BUTTON_BREADS).click()
+        check_text = driver.find_element(*TestLocators.CHECK_SECTION_SAUCES).text
+
+        assert check_text == "Соусы"
+
+    def test_check_operation_breads(self, driver):
+        driver.get("https://stellarburgers.nomoreparties.site/")
+
+        driver.find_element(*TestLocators.SEARCH_BUTTON_SAUCES).click()
+
+        driver.find_element(*TestLocators.SEARCH_BUTTON_BREADS).click()
 
         WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
-                                       (TestLocatorsSectionConstructor.CHECK_SECTION_BREADS))
+                                       (TestLocators.CHECK_SECTION_BREADS))
 
-        driver.quit()
+        check_text = driver.find_element(*TestLocators.CHECK_SECTION_BREADS).text
+
+        assert check_text == "Булки"

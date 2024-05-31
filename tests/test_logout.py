@@ -1,34 +1,36 @@
-from selenium import webdriver
+from conftest import *
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
-from locators.locators_logout import TestLocatorsLogout
+from locators.locators import TestLocators
+from data import *
 
 
 class TestLogout:
-    def test_log_out(self):
-        driver = webdriver.Chrome()
+    def test_log_out(self, driver):
         driver.get("https://stellarburgers.nomoreparties.site/")
 
-        driver.find_element(*TestLocatorsLogout.SEARCH_BUTTON_LOGIN_ACCOUNT).click()
+        driver.find_element(*TestLocators.SEARCH_BUTTON_LOGIN_ACCOUNT).click()
 
         WebDriverWait(driver, 5).until(
-            expected_conditions.visibility_of_element_located(TestLocatorsLogout.SEARCH_BUTTON_LOGIN))
+            expected_conditions.visibility_of_element_located(TestLocators.SEARCH_BUTTON_LOGIN))
 
-        driver.find_element(*TestLocatorsLogout.SEARCH_INPUT_EMAIL).send_keys('irina_anokhina9826@yandex.ru')
-        driver.find_element(*TestLocatorsLogout.SEARCH_INPUT_PASSWORD).send_keys('11223344')
-        driver.find_element(*TestLocatorsLogout.CLICK_BUTTON_LOGIN).click()
-
-        WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
-                                       (TestLocatorsLogout.SEARCH_BUTTON_PERSONAL_ACCOUNT))
-
-        driver.find_element(*TestLocatorsLogout.SEARCH_BUTTON_PERSONAL_ACCOUNT).click()
+        driver.find_element(*TestLocators.SEARCH_INPUT_EMAIL).send_keys(login_email)
+        driver.find_element(*TestLocators.SEARCH_INPUT_PASSWORD).send_keys(login_password)
+        driver.find_element(*TestLocators.CLICK_BUTTON_LOGIN).click()
 
         WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
-                                       (TestLocatorsLogout.SEARCH_TEXT_PROFILE))
+                                       (TestLocators.SEARCH_BUTTON_PERSONAL_ACCOUNT))
 
-        driver.find_element(*TestLocatorsLogout.SEARCH_BUTTON_LOGOUT).click()
+        driver.find_element(*TestLocators.SEARCH_BUTTON_PERSONAL_ACCOUNT).click()
+
+        WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located
+                                       (TestLocators.SEARCH_TEXT_PROFILE))
+
+        driver.find_element(*TestLocators.SEARCH_BUTTON_LOGOUT).click()
 
         WebDriverWait(driver, 5).until(
-            expected_conditions.visibility_of_element_located(TestLocatorsLogout.SEARCH_BUTTON_LOGIN))
+            expected_conditions.visibility_of_element_located(TestLocators.SEARCH_BUTTON_LOGIN))
 
-        driver.quit()
+        check_button = driver.find_element(*TestLocators.SEARCH_BUTTON_LOGIN).text
+
+        assert check_button == "Вход"
